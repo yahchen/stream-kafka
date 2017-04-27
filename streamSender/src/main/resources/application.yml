@@ -1,0 +1,37 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: kafka-output
+  cloud:
+      stream:
+          binders:
+                  kafka_output:
+                                type: kafka
+                                environment:
+                                      spring:
+                                        cloud:
+                                          stream:
+                                            kafka:
+                                              binder:
+                                                  brokers: localhost:9092
+                                                  zknodes: localhost:2181
+          instanceCount: 1
+          instanceIndex: 0
+          bindings:
+                    output:
+                            auto-add-partitions: false
+                            auto-create-topics: true
+                            min-partition-count: 1
+                            destination: test
+                            producer:
+                                      partitionCount: 1
+                            binder: kafka_output
+                            group: s1
+management:
+  health:
+    mail:
+      enabled: false
+  security:
+      enabled: false
+
